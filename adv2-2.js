@@ -17,19 +17,31 @@ sequences.forEach((sequence) => (result += isSafe(sequence) ? 1 : 0));
 console.log(result);
 
 function isSafe(arr) {
-  let isAscending = arr[0] <= arr[arr.length - 1] && arr[0] < arr[1];
-  let isDescending = arr[0] >= arr[arr.length - 1] && arr[0] > arr[1];
-  if (!isAscending && !isDescending) return false;
-  if (isAscending) {
+  if (x(arr) || y(arr)) return true;
+  for (let idx = 0; idx < arr.length; idx++) {
+    if (x(arr, idx) || y(arr, idx)) return true;
   }
-  if (isDescending) {
-  }
+
+  return false;
 }
 
-function isSafeAscending(arr) {
-  let result = arr.every(
+function x(arr, index) {
+  let filtered =
+    index !== undefined ? arr.filter((_, i) => i !== index) : [...arr];
+
+  return filtered.every(
     (num, i) =>
-      i === arr.length - 1 ||
-      (num < arr[i + 1] && Math.abs(num - arr[i + 1]) <= 3)
+      i === filtered.length - 1 ||
+      (num < filtered[i + 1] && Math.abs(num - filtered[i + 1]) <= 3)
+  );
+}
+function y(arr, index) {
+  let filtered =
+    index !== undefined ? arr.filter((_, i) => i !== index) : [...arr];
+
+  return filtered.every(
+    (num, i) =>
+      i === filtered.length - 1 ||
+      (num > filtered[i + 1] && Math.abs(num - filtered[i + 1]) <= 3)
   );
 }
